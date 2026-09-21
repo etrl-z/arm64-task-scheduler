@@ -2,7 +2,7 @@
 Commands for running a .NET/Python task scheduler in OracleCloud VM w/ARM64.
 
 
-**Connect to VM via SSH**
+## Connect to VM via SSH
 ```bash
 ssh -i "C:\[...]\SSHPrivate.key" [VM USER NAME]@[VM PUBLIC IP]
 ```
@@ -50,7 +50,9 @@ Hello, World!
 
 ---
 
-### Test Batch in .NET8
+## Configure a scheduled task to execute a batch
+
+### Prepare a Test Console in .NET8
 
 ```bash
 cd ~/homelab/dotnet/apps
@@ -78,7 +80,7 @@ Server: xxx-xxx-xxx
 OS: Unix ...
 ```
 
-### Publish an Executable .dll
+### Publish an executable .dll
 ```bash
 dotnet publish -c Release -r linux-arm64 --self-contained false -o ~/homelab/dotnet/apps/test-batch/publish
 ```
@@ -88,7 +90,7 @@ dotnet publish -c Release -r linux-arm64 --self-contained false -o ~/homelab/dot
 ls -lh ~/homelab/dotnet/apps/test-batch/publish
 ```
 
-### Execute manually
+### Execute the .dll manually
 ```bash
 dotnet ~/homelab/dotnet/apps/test-batch/publish/test-batch.dll
 ```
@@ -115,12 +117,12 @@ echo "===== END $(date '+%Y-%m-%d %H:%M:%S') - EXIT CODE: $EXIT_CODE ====="
 exit $EXIT_CODE
 ```
 
-### Make script Executable
+### Make the script executable
 ```bash
 chmod +x ~/homelab/scripts/test-batch.sh
 ```
 
-### Execute the script
+### Execute the script manually
 ```bash
 ~/homelab/scripts/test-batch.sh
 ```
@@ -159,7 +161,7 @@ ExecStart=/home/ubuntu/homelab/scripts/test-batch.sh
 sudo systemctl daemon-reload
 ```
 
-### Execute the service
+### Execute the service manually
 ```bash
 sudo systemctl start homelab-test-batch.service
 ```
@@ -173,4 +175,37 @@ journalctl -u homelab-test-batch.service --no-pager
 ```
 
 ---
+### Create a timer
+```bash
+sudo nano /etc/systemd/system/homelab-test-batch.timer
+```
 
+```ini
+[Unit]
+Description=Run Homelab Test .NET Batch every 5 minutes
+
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=5min
+Unit=homelab-test-batch.service
+
+[Install]
+WantedBy=timers.target
+```
+
+```bash
+sudo systemctl daemon-reload
+```
+```bash
+sudo systemctl enable --now homelab-test-batch.timer
+```
+
+### Check the system timers
+```bash
+systemctl list-timers --all | grep homelab
+```
+
+### Check the timer status
+```bash
+journalctl -u homelab-test-batch.service --no-pager
+```
