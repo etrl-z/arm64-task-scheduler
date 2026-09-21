@@ -80,7 +80,9 @@ Server: xxx-xxx-xxx
 OS: Unix ...
 ```
 
-### Publish an executable .dll (_to be deployed on VM via SCP - detailed later_)
+### Publish an executable .dll
+(_to be deployed on VM via SCP - detailed later -> **Build and Deploy**_)
+
 ```bash
 dotnet publish -c Release -r linux-arm64 --self-contained false -o ~/homelab/dotnet/apps/test-batch/publish
 ```
@@ -167,7 +169,7 @@ sudo systemctl daemon-reload
 sudo systemctl start homelab-test-batch.service
 ```
 
-### Check the status of the service / the output of the batch
+### Check the status of the service - the output for the batch
 ```bash
 sudo systemctl status homelab-test-batch.service
 ```
@@ -221,7 +223,7 @@ sudo systemctl disable --now homelab-test-batch.timer
 
 ---
 
-## Build and Release
+## Build and Deploy
 
 ### Build the local project
 ```bash
