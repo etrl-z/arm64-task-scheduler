@@ -4,7 +4,7 @@ Commands for running a .NET/Python task scheduler in OracleCloud VM w/ARM64.
 
 ## Connect to VM via SSH
 ```bash
-ssh -i "C:\[...]\SSHPrivate.key" [VM USER NAME]@[VM PUBLIC IP]
+ssh -i "C:\[...]\SSHPrivate.key" ubuntu@[VM PUBLIC IP]
 ```
 
 ---
@@ -216,4 +216,23 @@ journalctl -u homelab-test-batch.service --no-pager
 ### Disable the timer
 ```bash
 sudo systemctl disable --now homelab-test-batch.timer
+```
+
+---
+
+## Build and Release
+
+### Build the local project
+```bash
+dotnet publish -c Release -r linux-arm64 --self-contained false -o .\publish
+```
+
+### Transfer to server via SSH
+```bash
+scp -i "C:\[...]\SSHPrivate.key" -r ".\publish\*" ubuntu@[VM PUBLIC IP]:/home/ubuntu/homelab/dotnet/apps/MyBatch/
+```
+
+### Test manually
+```bash
+dotnet MyBatch.dll
 ```
