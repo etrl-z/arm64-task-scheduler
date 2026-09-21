@@ -200,12 +200,20 @@ sudo systemctl daemon-reload
 sudo systemctl enable --now homelab-test-batch.timer
 ```
 
-### Check the system timers
+### Check the specified timer
 ```bash
 systemctl list-timers --all | grep homelab
 ```
+_(use --all for all the system timers)_
 
-### Check the timer status
+### Check the timer executions
 ```bash
 journalctl -u homelab-test-batch.service --no-pager
+```
+
+---
+
+### Disable the timer
+```bash
+sudo systemctl disable --now homelab-test-batch.timer
 ```
