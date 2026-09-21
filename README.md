@@ -9,7 +9,7 @@ ssh -i "C:\[...]\SSHPrivate.key" ubuntu@[VM PUBLIC IP]
 
 ---
 
-## Manual installation steps for .NET8 on ARM64 architecture:
+## Manual installation steps for .NET8 on ARM64 architecture
 
 ### Prepare script
 ```bash
@@ -50,7 +50,7 @@ Hello, World!
 
 ---
 
-## Configure a scheduled task to execute a batch
+## Configure a scheduled service to execute a batch
 
 ### Prepare a Test Console in .NET8
 
@@ -65,7 +65,7 @@ nano Program.cs
 ```cs
 using System;
 
-Console.WriteLine($"Batch eseguito: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+Console.WriteLine($"Batch executed: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
 Console.WriteLine($"Server: {Environment.MachineName}");
 Console.WriteLine($"OS: {Environment.OSVersion}");
 ```
@@ -75,12 +75,12 @@ dotnet run
 ```
 
 ```text
-Batch eseguito: 2026-09-21 14:xx:xx
+Batch executed: 2026-09-21 14:xx:xx
 Server: xxx-xxx-xxx
 OS: Unix ...
 ```
 
-### Publish an executable .dll
+### Publish an executable .dll (_to be deployed on VM via SCP - detailed later_)
 ```bash
 dotnet publish -c Release -r linux-arm64 --self-contained false -o ~/homelab/dotnet/apps/test-batch/publish
 ```
@@ -123,7 +123,7 @@ chmod +x ~/homelab/scripts/test-batch.sh
 ```
 
 ### Execute the script manually 
-_(note: the configuration paths like "../" are relative to the current folder. If needed, 'cd' to the project folder where the .dll is being run)_
+_(note: the configuration paths like "../" are relative to the current folder. If needed, "cd" to the project folder where the .dll is being run)_
 ```bash
 ~/homelab/scripts/test-batch.sh
 ```
@@ -176,7 +176,7 @@ journalctl -u homelab-test-batch.service --no-pager
 ```
 
 ---
-### Create a timer
+### Create a timer to execute the service
 ```bash
 sudo nano /etc/systemd/system/homelab-test-batch.timer
 ```
