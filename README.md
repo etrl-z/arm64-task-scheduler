@@ -123,7 +123,7 @@ chmod +x ~/homelab/scripts/test-batch.sh
 ```
 
 ### Execute the script manually 
-_(note: the configuration paths like "../" are relative to the current folder. If needed, move to the project folder where the .dll is being run)_
+_(note: the configuration paths like "../" are relative to the current folder. If needed, 'cd' to the project folder where the .dll is being run)_
 ```bash
 ~/homelab/scripts/test-batch.sh
 ```
