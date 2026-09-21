@@ -93,6 +93,8 @@ ls -lh ~/homelab/dotnet/apps/test-batch/publish
 dotnet ~/homelab/dotnet/apps/test-batch/publish/test-batch.dll
 ```
 
+---
+
 ### Prepare a script to execute the .dll
 
 ```bash
@@ -133,4 +135,42 @@ OS: Unix 7.0.0.1009
 
 ---
 
+### Prepare a service to execute the script
+```bash
+sudo nano /etc/systemd/system/homelab-test-batch.service
+```
+
+```ini
+[Unit]
+Description=Homelab Test .NET Batch
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=ubuntu
+WorkingDirectory=/home/ubuntu/homelab/dotnet/apps/test-batch
+Environment="DOTNET_ROOT=/home/ubuntu/.dotnet"
+Environment="PATH=/home/ubuntu/.dotnet:/home/ubuntu/.dotnet/tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+ExecStart=/home/ubuntu/homelab/scripts/test-batch.sh
+```
+
+```bash
+sudo systemctl daemon-reload
+```
+
+### Execute the service
+```bash
+sudo systemctl start homelab-test-batch.service
+```
+
+### Check the status of the service / the output of the batch
+```bash
+sudo systemctl status homelab-test-batch.service
+```
+```bash
+journalctl -u homelab-test-batch.service --no-pager
+```
+
+---
 
